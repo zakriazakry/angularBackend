@@ -61,13 +61,7 @@ Route::prefix('auth')->group(function () {
             return response()->json([
                 'status' => false,
                 'msg' => "user not created!"
-            ], 400);
+            ], 200);
         }
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'status' => true,
-            'msg' => $user,
-        ], 201);
     });
 })->middleware(Cors::class);
