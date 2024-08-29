@@ -14,10 +14,14 @@ class RolesController extends Controller
     {
         return roles::all();
     }
+
     function getUserRole($user_id)
     {
-        return UserRole::with(['user', 'role'])->where("user_id", $user_id)->get();
+        $userRole =  UserRole::with(['user', 'role'])->where("user_id", $user_id)->get();
+        $allRole = $this->getAllRole();
+        
     }
+
     function setUserRole(Request $request, $user_id)
     {
         $validator = Validator::make($request->all(), [
@@ -31,17 +35,22 @@ class RolesController extends Controller
         }
         $rolesIDs = $request->input('rolesIDs');
         $roles = roles::whereIn('id', explode(',', $rolesIDs))->get();
-
         $user = User::find($user_id);
+        // delelte all roles
+        UserRole::where('user_id', $user_id)->delete();
         if (!$user) {
             return response()->json([
                 'error' => 'User not found'
             ], 404);
         }
-        $user->roles()->sync($rolesIDs);
-        
+        foreach ($roles as $value) {
+            $user->addRole($value->id);
+        }
         return response()->json([
             'success' => 'Roles assigned successfully'
-        ], 200); // OK status code
+        ], 200);
     }
+
+    // addUserRole...
+    // removeUserRole...
 }

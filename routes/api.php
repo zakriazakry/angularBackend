@@ -22,6 +22,6 @@ Route::middleware(['auth:sanctum', Cors::class])
         Route::get('getRole', 'getAllRole');
         Route::get('getRole/{user_id}', 'getUserRole');
         Route::post('setUserRole/{user_id}', 'setUserRole');
-        Route::post('addUserRole/{user_id}', 'addUserRole');
-        Route::post('removeUserRole/{user_id}', 'removeUserRole');
+        // Route::post('addUserRole/{user_id}', 'addUserRole');
+        // Route::post('removeUserRole/{user_id}', 'removeUserRole');
     });

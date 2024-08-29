@@ -54,7 +54,7 @@ class User extends Authenticatable
         if (!roles::find($roleId)) {
             return false;
         }
-        UserRole::create([
+        UserRole::updateOrCreate([
             'user_id' => $this->id,
             'role_id' => $roleId,
             'created_at' => now(),
