@@ -1,15 +1,27 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RolesController;
 use App\Http\Middleware\Cors;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Validator;
 
-Route::controller(AuthController::class)->prefix('auth')->group(function () {
-    Route::post('login','login');
-    Route::post('signup','signup');
+// Authentication routes
+Route::controller(AuthController::class)
+    ->prefix('auth')
+    ->middleware(Cors::class)
+    ->group(function () {
+        Route::post('login', 'login');
+        Route::post('signup', 'signup');
+    });
 
-})->middleware(Cors::class);
+// Role management routes
+Route::middleware(['auth:sanctum', Cors::class])
+    ->controller(RolesController::class)
+    ->prefix('roles')
+    ->group(function () {
+        Route::get('getRole', 'getAllRole');
+        Route::get('getRole/{user_id}', 'getUserRole');
+        Route::post('setUserRole/{user_id}', 'setUserRole');
+        Route::post('addUserRole/{user_id}', 'addUserRole');
+        Route::post('removeUserRole/{user_id}', 'removeUserRole');
+    });

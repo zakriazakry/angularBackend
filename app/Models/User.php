@@ -21,6 +21,7 @@ class User extends Authenticatable
         'first_name',
         'Last_name',
         'email',
+        'phone',
         'password',
     ];
 
@@ -45,5 +46,24 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // add role
+    function addRole($roleId)
+    {
+        if (!roles::find($roleId)) {
+            return false;
+        }
+        UserRole::create([
+            'user_id' => $this->id,
+            'role_id' => $roleId,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return true;
+    }
+    public function roles()
+    {
+        return $this->belongsToMany(UserRole::class, 'user_roles', 'user_id', 'role_id');
     }
 }
