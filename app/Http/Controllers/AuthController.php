@@ -55,7 +55,6 @@ class AuthController extends Controller
             'Last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 1,
         ]);
 
         if ($user) {
