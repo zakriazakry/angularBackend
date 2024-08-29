@@ -10,22 +10,29 @@ use Illuminate\Support\Facades\Validator;
 
 class RolesController extends Controller
 {
-    function getAllRole()
+    function getAllRoles()
     {
         return roles::all();
     }
 
-    function getUserRole($user_id)
+    public function getUserRoles($user_id)
     {
-        $userRole =  UserRole::with(['user', 'role'])->where("user_id", $user_id)->get();
-        $allRole = $this->getAllRole();
-        
+        $userRoles = UserRole::with('role')
+            ->where('user_id', $user_id)
+            ->get()
+            ->pluck('role'); 
+    
+        $allRoles = $this->getAllRoles();
+        foreach ($allRoles as $role) {
+            $role->active = $userRoles->contains($role);
+        }
+        return $allRoles;
     }
 
     function setUserRole(Request $request, $user_id)
     {
         $validator = Validator::make($request->all(), [
-            'rolesIDs' => 'required'
+            'roles' => 'required|string'
         ]);
 
         if ($validator->fails()) {

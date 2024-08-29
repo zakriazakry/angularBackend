@@ -97,7 +97,12 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            $user->addRole(5);
+            if (!$user->addRole(2)) {
+                return response()->json([
+                    'status' => true,
+                    'msg' => "User creation failed! - permission"
+                ], 400);
+            }
             $user->save();
 
             DB::commit();
