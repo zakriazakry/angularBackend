@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\userController;
 use App\Http\Middleware\Cors;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,8 @@ Route::middleware(['auth:sanctum', Cors::class])
         Route::post('setUserRole/{user_id}', 'setUserRole');
         // Route::post('addUserRole/{user_id}', 'addUserRole');
         // Route::post('removeUserRole/{user_id}', 'removeUserRole');
+    });
+
+    Route::middleware(['auth:sanctum', Cors::class])->controller(userController::class)->prefix('user')->group(function () {
+        Route::get('/getUsers','index');
     });
