@@ -22,10 +22,7 @@ class userController extends Controller
     }
     public function show($id)
     {
-        return response()->json([
-            'status' => false,
-            'msg'=> 'User not found!'
-        ],500);
+
         $user = User::find($id);
         if (!$user) {
             return response()->json([
