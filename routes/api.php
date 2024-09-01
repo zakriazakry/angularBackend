@@ -29,4 +29,5 @@ Route::middleware(['auth:sanctum', Cors::class])
 
     Route::middleware(['auth:sanctum', Cors::class])->controller(userController::class)->prefix('user')->group(function () {
         Route::get('/getUsers','index');
+        Route::get('/{id}','show');
     });
